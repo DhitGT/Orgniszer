@@ -1,9 +1,7 @@
 import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
-import { getFirestore } from 'firebase/firestore'
+import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore'
 import { getAnalytics } from 'firebase/analytics'
-import { collection, getDocs } from 'firebase/firestore'
-
 
 export default ({ app }, inject) => {
   const config = {
@@ -20,12 +18,25 @@ export default ({ app }, inject) => {
   const auth = getAuth(firebaseApp)
   const db = getFirestore(firebaseApp)
   const analytics = getAnalytics(firebaseApp)
+
   const firestore = {
     collection: (name) => collection(db, name),
     getCollection: async (name) => {
-      const collectionRef = firestore.collection(name)
+      const collectionRef = collection(db, name)
       const querySnapshot = await getDocs(collectionRef)
       return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+    },
+    addDoc: async (name, data) => {
+      const collectionRef = collection(db, name)
+      return await addDoc(collectionRef, data)
+    },
+    updateDoc: async (name, id, data) => {
+      const docRef = doc(db, name, id)
+      return await updateDoc(docRef, data)
+    },
+    deleteDoc: async (name, id) => {
+      const docRef = doc(db, name, id)
+      return await deleteDoc(docRef)
     }
   }
 
