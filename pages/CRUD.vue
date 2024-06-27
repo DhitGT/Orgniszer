@@ -1,6 +1,17 @@
 <template>
   <v-container>
     <v-row justify="center">
+      <div
+        v-if="isLoading"
+        class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-100 z-50"
+      >
+        <v-progress-circular
+          :size="70"
+          :width="7"
+          color="primary"
+          indeterminate
+        ></v-progress-circular>
+      </div>
       <v-col cols="12" md="8">
         <v-card class="pa-5">
           <v-form @submit.prevent="addOrUpdateOrganisasi">
@@ -97,12 +108,22 @@ export default {
       },
       organisasiList: [],
       editMode: false,
+      isLoading: true,
     }
   },
-  async created() {
+  async mounted() {
+    await this.checkAuth()
     await this.fetchOrganisasi()
   },
   methods: {
+    async checkAuth() {
+      const user = await this.$firebase.auth.currentUser
+      console.log(user)
+      if (!user) {
+        this.$router.push('/auth/login')
+      }
+      this.isLoading = false
+    },
     async fetchOrganisasi() {
       try {
         this.organisasiList = await this.$firebase.firestore.getCollection(

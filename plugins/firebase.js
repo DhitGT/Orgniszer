@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app'
-import { getAuth } from 'firebase/auth'
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, signOut } from 'firebase/auth'
 import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore'
 import { getAnalytics } from 'firebase/analytics'
 
@@ -18,6 +18,7 @@ export default ({ app }, inject) => {
   const auth = getAuth(firebaseApp)
   const db = getFirestore(firebaseApp)
   const analytics = getAnalytics(firebaseApp)
+  const googleProvider = new GoogleAuthProvider()
 
   const firestore = {
     collection: (name) => collection(db, name),
@@ -40,5 +41,9 @@ export default ({ app }, inject) => {
     }
   }
 
-  inject('firebase', { auth, firestore, analytics })
+
+
+  inject('firebase', { auth, firestore, analytics, googleProvider, signInWithPopup, signInWithEmailAndPassword, signOut })
 }
+
+
