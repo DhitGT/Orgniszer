@@ -78,7 +78,7 @@ export default {
         console.log(data.user)
         this.$store.commit('setUser', JSON.stringify(data.user)) // Commit mutation to update Vuex state
         console.log(this.user)
-        this.$router.push('/crud') // Navigate to '/crud' upon successful login
+        this.$router.push('/crud') // Navigate to '/crgghgjgghud' upon successful login
       } catch (error) {
         console.error('Error logging in with Google:', error)
       }
