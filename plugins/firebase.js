@@ -41,7 +41,6 @@ export default ({ app }, inject) => {
     }
   }
 
-  // sdfsdfsdfsdfsdf
 
   inject('firebase', { auth, firestore, analytics, googleProvider, signInWithPopup, signInWithEmailAndPassword, signOut })
 }
